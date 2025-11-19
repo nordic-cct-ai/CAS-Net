@@ -26,10 +26,10 @@ from sklearn.metrics import f1_score
 
 
 def numeric_score(pred, gt):
-    FP = np.float(np.sum((pred == 255) & (gt == 0)))
-    FN = np.float(np.sum((pred == 0) & (gt == 255)))
-    TP = np.float(np.sum((pred == 255) & (gt == 255)))
-    TN = np.float(np.sum((pred == 0) & (gt == 0)))
+    FP = float(np.sum((pred == 255) & (gt == 0)))
+    FN = float(np.sum((pred == 0) & (gt == 255)))
+    TP = float(np.sum((pred == 255) & (gt == 255)))
+    TN = float(np.sum((pred == 0) & (gt == 0)))
     return FP, FN, TP, TN
 
 
@@ -62,8 +62,8 @@ def metrics_3d(pred, gt):
 def over_rate(pred, gt):
     # pred = np.int64(pred / 255)
     # gt = np.int64(gt / 255)
-    Rs = np.float(np.sum(gt == 255))
-    Os = np.float(np.sum((pred == 255) & (gt == 0)))
+    Rs = float(np.sum(gt == 255))
+    Os = float(np.sum((pred == 255) & (gt == 0)))
     OR = Os / (Rs + Os)
     return OR
 
@@ -71,8 +71,8 @@ def over_rate(pred, gt):
 def under_rate(pred, gt):
     # pred = np.int64(pred / 255)
     # gt = np.int64(gt / 255)
-    Rs = np.float(np.sum(gt == 255))
-    Us = np.float(np.sum((pred == 0) & (gt == 255)))
-    Os = np.float(np.sum((pred == 255) & (gt == 0)))
+    Rs = float(np.sum(gt == 255))
+    Us = float(np.sum((pred == 0) & (gt == 255)))
+    Os = float(np.sum((pred == 255) & (gt == 0)))
     UR = Us / (Rs + Os)
     return UR

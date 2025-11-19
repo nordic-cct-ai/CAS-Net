@@ -16,6 +16,7 @@ from model.unet3d import UNet3D
 
 from dataloader.npy_3d_Loader import *
 import pandas as pd
+import SimpleITK as sitk
 
 from postprocess.keep_the_largest_area import get_aorta_branch
 from postprocess.keep_the_largest_area import backpreprcess as postprocess
@@ -30,13 +31,13 @@ Test_Model = {'CSNet3D': CSNet3D,
 # os.environ['CUDA_VISIBLE_DEVICES'] = "5"
 
 args = {
-    'root': 'cta_project/code/CAS-Net',
-    'data_path': '/cta_project/data/npy',
+    'root': '/home/fredrik/Documents/GitHub/open_source_segmentation_codes/CAS-Net',
+    'data_path': '/media/fredrik/server_data/tmp_save_data/data/npy',
     'pred_path': 'cor_result_160_CASNet',
     'input_shape': (128, 160, 160),
     'model_path': './save_models_randomcrop',
     'batch_size': 2,
-    'folder': 'folder1',
+    'folder': 'folder3',
     'model_name': 'CASNet3D',
 }
 
@@ -92,7 +93,7 @@ def get_metrics(pred, gt):
     return tp, fn, fp, IoU, dice, Or, Ur
 
 
-def model_eval(net):
+def model_eval(net, aorta_exists=False):
     print("\033[1;30;43m {} Start testing ... {}\033[0m".format("*" * 8, "*" * 8))
     images_lsts, groundtruth_lsts = load_dataset(args['data_path'], args['folder'], False)
     patch_size1 = args['input_shape'][0]
@@ -141,21 +142,24 @@ def model_eval(net):
             label_npy = np.flipud(label_npy)
             mask = np.flipud(mask)
             print('+++++++++++++')
-            mask_aorta, mask_branch = get_aorta_branch(mask)
-            label_aorta, label_branch = get_aorta_branch(label_npy)
+            if aorta_exists:
+                mask_aorta, mask_branch = get_aorta_branch(mask)
+                label_aorta, label_branch = get_aorta_branch(label_npy)
             print('+++++++++++++')
             tp, fn, fp, iou, dice, Or, Ur = get_metrics(mask, label_npy)
-            tpa, fna, fpa, ioua, dicea, Ora, Ura = get_metrics(mask_aorta, label_aorta)
-            tpb, fnb, fpb, ioub, diceb, Orb, Urb = get_metrics(mask_branch, label_branch)
+            if aorta_exists:
+                tpa, fna, fpa, ioua, dicea, Ora, Ura = get_metrics(mask_aorta, label_aorta)
+                tpb, fnb, fpb, ioub, diceb, Orb, Urb = get_metrics(mask_branch, label_branch)
             print(
                 "--- test TP:{0:.4f}    test FN:{1:.4f}    test FP:{2:.4f}    test IoU:{3:.4f}  test Dice:{4:.4f} test OR:{5:.4f}  test UR:{6:.4f}".format(
                     tp, fn, fp, iou, dice, Or, Ur))
-            print(
-                "--- test TPa:{0:.4f}    test FNa:{1:.4f}    test FPa:{2:.4f}    test IoUa:{3:.4f}  test Dicea:{4:.4f} testa OR:{5:.4f}  test UR:{6:.4f}".format(
-                    tpa, fna, fpa, ioua, dicea, Ora, Ura))
-            print(
-                "--- test TP:{0:.4f}    test FN:{1:.4f}    test FP:{2:.4f}    test IoU:{3:.4f}  test Dice:{4:.4f} test OR:{5:.4f}  test UR:{6:.4f}".format(
-                    tpb, fnb, fpb, ioub, diceb, Orb, Urb))
+            if aorta_exists:
+                print(
+                    "--- test TPa:{0:.4f}    test FNa:{1:.4f}    test FPa:{2:.4f}    test IoUa:{3:.4f}  test Dicea:{4:.4f} testa OR:{5:.4f}  test UR:{6:.4f}".format(
+                        tpa, fna, fpa, ioua, dicea, Ora, Ura))
+                print(
+                    "--- test TP:{0:.4f}    test FN:{1:.4f}    test FP:{2:.4f}    test IoU:{3:.4f}  test Dice:{4:.4f} test OR:{5:.4f}  test UR:{6:.4f}".format(
+                        tpb, fnb, fpb, ioub, diceb, Orb, Urb))
             TP.append(tp)
             FN.append(fn)
             FP.append(fp)
@@ -164,8 +168,9 @@ def model_eval(net):
             OR.append(Or)
             UR.append(Ur)
             data_arry.append([filename, tp, fn, fp, iou, dice, Or, Ur])
-            data_arrya.append([filename, tpa, fna, fpa, ioua, dicea, Ora, Ura])
-            data_arryb.append([filename, tpb, fnb, fpb, ioub, diceb, Orb, Urb])
+            if aorta_exists:
+                data_arrya.append([filename, tpa, fna, fpa, ioua, dicea, Ora, Ura])
+                data_arryb.append([filename, tpb, fnb, fpb, ioub, diceb, Orb, Urb])
             mask[mask > 0] = 1
             label_npy[label_npy > 0] = 1
             out = sitk.GetImageFromArray(mask)

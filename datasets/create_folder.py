@@ -2,7 +2,7 @@ import os
 import numpy
 from random import shuffle
 
-PATH = '/cta_project/data/npy/img'
+PATH = '/media/fredrik/server_data/tmp_save_data/data/npy/img'
 SAVE_PATH = './'
 
 def create_5_floder(folder, save_foler):

@@ -29,9 +29,9 @@ from utils.losses import WeightedCrossEntropyLoss, DiceLoss
 
 import sys
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '2'
+#os.environ['CUDA_VISIBLE_DEVICES'] = '2'
 args = {
-    'data_path': 'cta_project/data/npy',
+    'data_path': '/media/fredrik/server_data/tmp_save_data/data/npy',
     'epochs': 600,
     'input_shape': (128, 160, 160),
     'snapshot': 50,
@@ -185,4 +185,11 @@ def model_eval(net):
 
 if __name__ == '__main__':
     print("______________________")
+
+    if torch.cuda.is_available():
+        print("CUDA-enabled GPU is available.")
+        print(f"Number of GPUs: {torch.cuda.device_count()}")
+        print(f"Current GPU name: {torch.cuda.get_device_name(0)}")  # Get name of the first GPU
+    else:
+        print("No CUDA-enabled GPU found or CUDA is not properly configured.")
     train()
