@@ -1,0 +1,40 @@
+{
+    "training": [
+        {
+            "image": "sub_data_directory/case_1/imaging.nii.gz",
+            "label": "sub_data_directory/case_1/segmentation.nii.gz"
+        },
+        {
+            "image": "sub_data_directory/case_2/imaging.nii.gz",
+            "label": "sub_data_directory/case_2/segmentation.nii.gz"
+        },
+        {
+            "image": "sub_data_directory/case_3/imaging.nii.gz",
+            "label": "sub_data_directory/case_3/segmentation.nii.gz"
+        },
+        {
+            "image": "sub_data_directory/case_4/imaging.nii.gz",
+            "label": "sub_data_directory/case_4/segmentation.nii.gz"
+        }
+    ],
+    "validation": [
+        {
+            "image": "sub_data_directory/case_5/imaging.nii.gz",
+            "label": "sub_data_directory/case_5/segmentation.nii.gz"
+        },
+        {
+            "image": "sub_data_directory/case_6/imaging.nii.gz",
+            "label": "sub_data_directory/case_6/segmentation.nii.gz"
+        }
+    ],
+    "test": [
+        {
+            "image": "sub_data_directory/case_7/imaging_prediction.nii.gz",
+            "label": "sub_data_directory/case_7/segmentation.nii.gz"
+        },
+        {
+            "image": "sub_data_directory/case_8/imaging_prediction.nii.gz",
+            "label": "sub_data_directory/case_8/segmentation.nii.gz"
+        }
+    ]
+}

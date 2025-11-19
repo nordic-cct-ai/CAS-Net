@@ -1,3 +1,4 @@
+# Original README instructions: 
 # CAS-Net
 This is the official PyTorch implementation for our paper, "A novel multi-attention, multi-scale 3D deep network for coronary artery segmentation", published in the journal 
 *Medical Image Analysis* (2023).
@@ -98,4 +99,22 @@ If you use our work or code in your research, please cite our paper:
 ## License
 
 This repository is licensed under the [MIT License](https://www.google.com/search?q=LICENSE).
+
+
+# CCTA-AI README instructions:
+
+See env_instructions_dev.txt for environment instructions
+
+
+-python copy_data.py # copy data from json file (see example_data_file.json). Create a new .json file with and update paths in copy_data.py
+
+cd datasets
+
+-python create_folder.py # create train/validation/test-splits. Update path to data associated with paths set in copy_data.py
+
+cd ..
+
+- python train.py # update relevant parameters and paths/folders in args at the top of the script
+
+- python test.py # update relevant parameters and paths/folders in args at the top of the script, specifically the path to the saved model generated from "train.py"
 
